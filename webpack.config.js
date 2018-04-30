@@ -21,5 +21,10 @@ module.exports = {
                 presets: ['env']
             }
         }]
+    },
+    externals: {
+        'audio-context': true,
+        'minilog': true,
+        'startaudiocontext': true
     }
 };
