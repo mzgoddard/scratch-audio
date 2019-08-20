@@ -7,6 +7,7 @@ const uid = require('./uid');
 const ADPCMSoundDecoder = require('./ADPCMSoundDecoder');
 const Loudness = require('./Loudness');
 const SoundPlayer = require('./SoundPlayer');
+const MusicPlayer = require('./MusicPlayer');
 
 const EffectChain = require('./effects/EffectChain');
 const PanEffect = require('./effects/PanEffect');
@@ -217,6 +218,10 @@ class AudioEngine {
      * @returns {?Promise} - a promise which will resolve to the buffer
      */
     decodeSoundPlayer (sound) {
+        if (sound.data.buffer.byteLength > 0.5 * 1024 * 1024) {
+            const id = uid();
+            return Promise.resolve(new MusicPlayer(this, {id, buffer: sound.data.buffer}));
+        }
         return this._decodeSound(sound)
         .then(([id, buffer]) => new SoundPlayer(this, {id, buffer}));
     }
